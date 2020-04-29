@@ -6,6 +6,7 @@ package com.jama.api.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,72 +40,15 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	@Transactional
 	public List<Student> getStudents() {
-		List<Student> lista =  studentDAO.findAll();//new ArrayList<>();
+		List<Student> lista =  studentDAO.findAll();		
 		
-		
-		/*Student student1 = new Student();
-		student1.setId(1);
-		student1.setFirstName("Armando");
-		student1.setLastName("Jaramillo");
-		student1.setEmail("ajaramillo18@hotmail.com");
-		lista.add(student1);
-		Student student2 = new Student();
-		student2.setId(2);
-		student2.setFirstName("Angela");
-		student2.setLastName("Magallon");
-		student2.setEmail("gelamagallona@hotmail.com");
-		lista.add(student2);
-		Student student3 = new Student();
-		student3.setId(3);
-		student3.setFirstName("Dante");
-		student3.setLastName("Dali");
-		student3.setEmail("dddd@hotmail.com");
-		lista.add(student3);*/
 		return lista;
 	}
 
 	@Override
 	@Transactional
-	public void save(Student student) {
-		
-		//if this is an update action
-		if(student.getId()!=0)
-		{
-			
-			Course course = courseDAO.getCourse(Integer.parseInt(student.getCourse()));
-			
-			// add course to set
-			Set<Course> courses = new HashSet<Course>();
-			courses.add(course);
-			
-			//add course set to student object
-		
-			student.setCourses(courses);
-			
-			
-			
-			studentDAO.saveOrUpdate(student);
-			return;
-		}
-					
-		//saves student object to database	
-		int id = studentDAO.save(student);
-		
-		//retrieves selected course object from database
-		Course course = courseDAO.getCourse(Integer.parseInt(student.getCourse()));
-		
-		// add course to set
-		Set<Course> courses = new HashSet<Course>();
-		courses.add(course);
-		
-		//add course set to student object		
-		student.setCourses(courses);
-		
-		//saves student object to database again, this time with proper student ID and courses
-
-		studentDAO.saveOrUpdate(student);
-		
-		
+	public void save(Student student) {			
+		studentDAO.save(student);	
 		
 	}
 
@@ -112,7 +56,9 @@ public class StudentServiceImpl implements StudentService {
 	@Transactional
 	public Student getStudent(int theId) {
 		
-		Student student = studentDAO.findById(theId);
+		Optional<Student> studentOpt = studentDAO.findById(theId);
+		
+		Student student= studentOpt.get();
 		
 		return student;
 		
@@ -130,12 +76,18 @@ public class StudentServiceImpl implements StudentService {
 	@Transactional
 	public List<Student> getStudentsByName(String name) {
 		
-		List<Student> lista =  studentDAO.getStudentsByName(name);
+		List<Student> lista =  studentDAO.getStudentsByLastName(name);
 		
 		return lista;
 	}
 
 	@Override
+	@Transactional
+	public void paymentStudent(int theId, String concept, double amount) {
+	
+	}
+	//TODO implementar el pago
+	/*@Override
 	@Transactional
 	public void paymentStudent(int theId, String concept, double amount) {
 		
@@ -157,6 +109,6 @@ public class StudentServiceImpl implements StudentService {
 						+concept
 						+ ". \n Te esperamos en clase.");
 		
-	}
+	}*/
 
 }

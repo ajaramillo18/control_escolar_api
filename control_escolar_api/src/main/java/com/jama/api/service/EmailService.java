@@ -20,8 +20,8 @@ public class EmailService
     @Autowired
     private JavaMailSender mailSender;
       
-    @Autowired
-    private SimpleMailMessage preConfiguredMessage;
+    //@Autowired
+   // private SimpleMailMessage preConfiguredMessage;
     
     @Value("${email.bcc}")
     String bcc;
@@ -45,10 +45,10 @@ public class EmailService
     /**
      * This method will send a pre-configured message
      * */
-    public void sendPreConfiguredMail(String message) 
+  /*  public void sendPreConfiguredMail(String message) 
     {
         SimpleMailMessage mailMessage = new SimpleMailMessage(preConfiguredMessage);
         mailMessage.setText(message);
         mailSender.send(mailMessage);
-    }
+    }*/
 }
