@@ -19,7 +19,7 @@ public interface StudentService {
 
 	public List<Student> getStudents();
 
-	public void save(Student student);
+	public Student save(Student student);
 
 	public Student getStudent(int theId);
 

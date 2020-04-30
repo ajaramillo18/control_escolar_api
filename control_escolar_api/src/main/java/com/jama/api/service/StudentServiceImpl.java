@@ -47,8 +47,9 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	@Transactional
-	public void save(Student student) {			
-		studentDAO.save(student);	
+	public Student save(Student student) {			
+		
+		return studentDAO.save(student);	
 		
 	}
 

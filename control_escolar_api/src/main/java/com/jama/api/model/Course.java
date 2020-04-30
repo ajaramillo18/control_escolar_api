@@ -25,6 +25,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -76,6 +78,7 @@ public class Course {
 			joinColumns=@JoinColumn(name="course_id"),
 			inverseJoinColumns=@JoinColumn(name="student_id")
 			)	
+	@JsonBackReference //added to avoid infinite recursion caused by manyToMany when jackson makes the parsing to JSON
 	private Set<Student> students;
 
 }
