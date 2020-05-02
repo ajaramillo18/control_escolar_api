@@ -4,6 +4,7 @@
 package com.jama.api.model;
 
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -28,6 +29,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
@@ -92,16 +94,15 @@ public class Student {
 	private String phone;
 	
 	@ManyToMany(fetch=FetchType.EAGER,
-			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-					 CascadeType.DETACH, CascadeType.REFRESH})
+			cascade= {CascadeType.MERGE})
 	@JoinTable(
 				name="course_student",
 				joinColumns=@JoinColumn(name="student_id"),
 				inverseJoinColumns=@JoinColumn(name="course_id")
 				)	
-	@JsonManagedReference //added to avoid infinite recursion caused by manyToMany when jackson makes the parsing to JSON
+	//@JsonManagedReference //added to avoid infinite recursion caused by manyToMany when jackson makes the parsing to JSON
 	private Set<Course> courses;
 	
 	@Transient
-	String course;
+	private String course;
 }

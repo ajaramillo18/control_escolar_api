@@ -26,6 +26,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -70,15 +71,14 @@ public class Course {
 	private String teacher;
 	
 	@ManyToMany(fetch=FetchType.EAGER,
-			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-					 CascadeType.DETACH, CascadeType.REFRESH})
+			cascade= {CascadeType.MERGE})
 	
 	@JoinTable(
 			name="course_student",
 			joinColumns=@JoinColumn(name="course_id"),
 			inverseJoinColumns=@JoinColumn(name="student_id")
 			)	
-	@JsonBackReference //added to avoid infinite recursion caused by manyToMany when jackson makes the parsing to JSON
+	@JsonBackReference //added to avoid infinite recursion caused by manyToMany when jackson makes the parsing to JSON	
 	private Set<Student> students;
 
 }
