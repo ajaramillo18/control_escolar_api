@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jama.api.exception.StudentNotFoundException;
 import com.jama.api.model.Student;
 import com.jama.api.service.StudentService;
 
@@ -44,6 +45,10 @@ public class StudentRestController {
 	 public Student getStudents(@PathVariable int studentId){
 		 
 		 Student student = service.getStudent(studentId);
+		 
+			if (student == null) {
+				throw new StudentNotFoundException("Student id not found - " + studentId);
+			}
 		 
 		 return student;
 		 
@@ -73,7 +78,12 @@ public class StudentRestController {
 	@DeleteMapping("/students/{studentId}")	
 	public String deleteStudent(@PathVariable int studentId) {
 		
-		service.deleteStudent(studentId);
+		Student student = service.getStudent(studentId);
+		if (student == null) {
+			throw new StudentNotFoundException("Student id not found - " + studentId);
+		}
+		
+		service.deleteStudent(studentId);		
 		
 		return "Estudiante con id: " + studentId + " ha sido borrado.";
 	}
@@ -86,10 +96,6 @@ public class StudentRestController {
 		 return studentSaved;		
 		
 	}
-	
-	// TODO falta agregar manejo de excepciones
-	
-	
 	
 	
 

@@ -59,7 +59,9 @@ public class StudentServiceImpl implements StudentService {
 		
 		Optional<Student> studentOpt = studentDAO.findById(theId);
 		
-		Student student= studentOpt.get();
+		Student student = null;
+		if(studentOpt.isPresent())		
+			student= studentOpt.get();
 		
 		return student;
 		
